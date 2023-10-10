@@ -1,9 +1,10 @@
 const inputs = document.querySelector(".inputs"),
-resetBtn = document.querySelector(".reset-btn"),
-hint = document.querySelector(".hint span"),
-typingInput = document.querySelector(".typing-input");
+    resetBtn = document.querySelector(".reset-btn"),
+    hint = document.querySelector(".hint span"),
+    wrongletter = document.querySelector(".wrong-letter span"),
+    typingInput = document.querySelector(".typing-input");
 
-let word;
+let word, currects = [], incurrects = [];
 
 function randomWord() {
     //getting random object from wordlist
@@ -24,21 +25,24 @@ randomWord();
 
 function initGame(e) {
     let key = e.target.value;
-    if(key.match(/^[A-Za-z]+$/)){
+    if (key.match(/^[A-Za-z]+$/) && !incurrects.includes(` ${key}`) && !currects.includes(key)) {
         console.log(key);
-        if(word.includes(key)){ //if user letter found in the word
-           for (let i = 0; i < word.length; i++) {
-            //Showing matched letter in the input  value
-            if(word[i] === key){
-                inputs.querySelectorAll("input")[i].value = key;
+        if (word.includes(key)) { //if user letter found in the word
+            for (let i = 0; i < word.length; i++) {
+                //Showing matched letter in the input  value
+                if (word[i] === key) {
+                    currects.push(` ${key}`);
+                    inputs.querySelectorAll("input")[i].value = key;
+                }
             }
-           }
-        }else{  
-            console.log("Letter not found");
+        } else {
+            incurrects.push(` ${key}`);
         }
     }
+    wrongletter.innerText = incurrects;
+    typingInput.value = "";
 }
 
 resetBtn.addEventListener("click", randomWord);
 typingInput.addEventListener("input", initGame);
-document.addEventListener("keydown", ()=>typingInput.focus());
+document.addEventListener("keydown", () => typingInput.focus());
