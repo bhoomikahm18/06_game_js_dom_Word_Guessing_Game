@@ -30,7 +30,6 @@ randomWord();
 function initGame(e) {
     let key = e.target.value;
     if (key.match(/^[A-Za-z]+$/) && !incurrects.includes(` ${key}`) && !currects.includes(key)) {
-        console.log(key);
         if (word.includes(key)) { //if user letter found in the word
             for (let i = 0; i < word.length; i++) {
                 //Showing matched letter in the input  value
@@ -48,15 +47,21 @@ function initGame(e) {
     }
     typingInput.value = "";
 
-    if(maxGuesses < 1){ //if user couldn't found all letters
-        alert("Game Over! You don't have remaining guesses")
-        for (let i = 0; i < word.length; i++) {
-            //Showing all letter in the input
-            inputs.querySelectorAll("input")[i].value = word[i];
+    setTimeout(() => {
+        if (currects.length === word.length) { //If user found all word
+            alert(`Congrats! You you found the word ${word.toUpperCase()}`);
+            randomWord(); //Calling randomWord function, so the game reset
+        } else if (maxGuesses < 1) { //if user couldn't found all letters
+            alert("Game Over! You don't have remaining guesses");
+            for (let i = 0; i < word.length; i++) {
+                //Showing all letter in the input
+                inputs.querySelectorAll("input")[i].value = word[i];
+            }
         }
-    }
+    })
 }
 
 resetBtn.addEventListener("click", randomWord);
 typingInput.addEventListener("input", initGame);
+inputs.addEventListener("click", () => typingInput.focus());
 document.addEventListener("keydown", () => typingInput.focus());

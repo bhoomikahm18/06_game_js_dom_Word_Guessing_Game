@@ -41,7 +41,7 @@ const wordList = [
     },
     {
         word: "metal",
-        hint: "relating to the mind"
+        hint: "a solid material"
     },
     {
         word: "java",
